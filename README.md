@@ -14,5 +14,6 @@ Features:
 - [ ] Leaving a game
 - [ ] Error handling (this name is taken, pin is invalid, kicked out, etc.)
     
+# Why would anyone need this, since this just uses Selenium?
 
-Made with Selenium
+Kahoot-CLI is designed in mind of devices that can't show a browser tab, like handheld like devices. With Kahoot-CLI, you could make something like a Kahoot handheld, something you couldn't make before.
