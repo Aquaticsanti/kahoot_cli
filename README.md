@@ -7,8 +7,8 @@ Features:
 - [ ] Reactions
 - [ ] Avatars
 - [X] Answering single choice questions
-- [ ] Answering multiple choice questions
-- [X] Answering True or False questions
+- [X] Answering multiple choice questions (Can answer them, but it's bugged)
+- [X] Answering True or False questions (Can answer them, but it's bugged)
 - [ ] Displaying points
 - [ ] Finishing a game
 - [ ] Leaving a game

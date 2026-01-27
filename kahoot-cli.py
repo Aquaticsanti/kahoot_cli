@@ -9,43 +9,81 @@ import random
 def cls(): # Source - https://stackoverflow.com/a/684344
     os.system('cls' if os.name=='nt' else 'clear')
 
-def printSelectedAnswer(option_no: int = 0, true_false: bool = False):
-    if true_false == False:
+def printSelectedAnswer(option_no: int = 0, question_type: str = "Quiz", picked_options: list = []):
+    if question_type == "Quiz":
         if option_no == 0:
             print(colored(f"> {ans_red.text}", "red", None, ["bold"]))
             print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
             if ans_yellow != "":
-                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
+                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
             if ans_green != "":
-                print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore
+                print(colored(f"  {ans_green.text}", "green", None, ["bold"]))
         elif option_no == 1:
             print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
             print(colored(f"> {ans_blue.text}", "blue", None, ["bold"]))
             if ans_yellow != "":
-                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
+                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
             if ans_green != "":
-                print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore 
+                print(colored(f"  {ans_green.text}", "green", None, ["bold"])) 
         if option_no == 2:
             print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
             print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
             if ans_yellow != "":
-                print(colored(f"> {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
+                print(colored(f"> {ans_yellow.text}", "yellow", None, ["bold"]))
             if ans_green != "":
-                print(colored(f"  {ans_green.text}", "green", None, ["bold"])) # type: ignore
+                print(colored(f"  {ans_green.text}", "green", None, ["bold"]))
         elif option_no == 3:
             print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
             print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
             if ans_yellow != "":
-                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"])) # type: ignore
+                print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
             if ans_green != "":
-                print(colored(f"> {ans_green.text}", "green", None, ["bold"])) # type: ignore
-    elif true_false == True:
+                print(colored(f"> {ans_green.text}", "green", None, ["bold"]))
+    elif question_type == "TorF":
         if option_no == 0:
             print(colored(f"> {ans_red.text}", "blue", None, ["bold"])) # Yes, red is blue and blue is red. I know that.
             print(colored(f"  {ans_blue.text}", "red", None, ["bold"]))
         elif option_no == 1:
             print(colored(f"  {ans_red.text}", "blue", None, ["bold"]))
             print(colored(f"> {ans_blue.text}", "red", None, ["bold"]))
+    elif question_type == "Multi":
+        if option_no == 0:
+            print(colored(f"> {ans_red.text}", "red", None, ["bold"]))
+        elif option_no != 0:
+            print(colored(f"  {ans_red.text}", "red", None, ["bold"]))
+        elif 0 in picked_options:
+            print(colored(">", "white", None, ["bold"]) ,colored(f" {ans_red.text}", "red", None, ["bold"]))
+        elif option_no == 1:
+            print(colored(f"> {ans_blue.text}", "blue", None, ["bold"]))
+        elif option_no != 1:
+            print(colored(f"  {ans_blue.text}", "blue", None, ["bold"]))
+        elif 1 in picked_options:
+            print(colored(">", "white", None, ["bold"]), colored(f" {ans_blue.text}", "blue", None, ["bold"]))
+        elif option_no == 2 and ans_yellow != "":
+            print(colored(f"> {ans_yellow.text}", "yellow", None, ["bold"]))
+        elif option_no != 2 and ans_yellow != "":
+            print(colored(f"  {ans_yellow.text}", "yellow", None, ["bold"]))
+        elif 2 in picked_options:
+            print(colored(">", "white", None, ["bold"]), colored(f" {ans_yellow.text}", "yellow", None, ["bold"]))
+        elif option_no == 3 and ans_green != "":
+            print(colored(f"> {ans_green.text}", "green", None, ["bold"]))
+        elif option_no != 3 and ans_green != "":
+            print(colored(f"  {ans_green.text}", "green", None, ["bold"])) 
+        elif 3 in picked_options:
+            print(colored(">", "white", None, ["bold"]), colored(f" {ans_green.text}", "green", None, ["bold"]))
+        elif option_no == amountOptions:
+            print(colored(f"> SUBMIT", None, None, ["bold"]))
+        elif option_no != amountOptions:
+            print(colored(f"  SUBMIT", None, None, ["bold"]))
+    
+
+def getWinState():
+    result_logo = driver.find_element(By.CSS_SELECTOR, "circle[cx='40']")
+
+    if result_logo.get_attribute("fill") == "#66BF39":
+        return True
+    elif result_logo.get_attribute("fill") == "#F35":
+        return False
 
 correctMessages = ["Way to go, superstar!", "Amazing!", "Trust me, your oponents are jealous.", "One step closer to victory!", "Keep the flame lit!"]
 wrongMessages = ["Don't worry, you'll get them next time!", "Never back down never what?", "", "Nice try!"]
@@ -153,14 +191,23 @@ while True: # This encapsulates the whole game logic.
     question_title = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='block-title']")
 
     try:
-        true_or_false = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='question-type-heading-trueOrFalseTitle']")
+        question_type = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='question-type-heading-trueOrFalseTitle']")
     except:
-        true_or_false = False
+        question_type = "Quiz"
     else:
-        true_or_false = True
+        question_type = "TorF"
+    
+    try:
+        submit_multi = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='multi-select-submit-button']")
+    except:
+        pass
+    else:
+        question_type = "Multi"
 
-
-    print(f"Question {question_no} - {question_title.text}")
+    if question_type == "Quiz":
+        print(f"Question {question_no} - {question_title.text}")
+    elif question_type == "Multi":
+        print(f"Question {question_no} - {question_title.text}", colored(" (MULTIPLE CHOICE!)", None, None, ["bold"]))
 
     ans_red = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-0']")
     ans_blue = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-1']")
@@ -179,52 +226,73 @@ while True: # This encapsulates the whole game logic.
         ans_green = ""
         if ans_yellow != "":
             amountOptions = 2
+    
+    if question_type == "Multi":
+        amountOptions += 1 # To account for the submit button
+        picked_ans = []
 
     selected_ans = 0
 
     printSelectedAnswer()
 
-
     while True:
-        print("\033[5A") # Moves cursor up 5 lines, Source - https://stackoverflow.com/a/72667369
+        print(f"\033[{amountOptions+2}A") # Moves cursor up x lines, Source - https://stackoverflow.com/a/72667369
         keypress = readkey()
         if keypress == key.UP:
             selected_ans -= 1
             if selected_ans < 0:
                 selected_ans = amountOptions
-            printSelectedAnswer(selected_ans, true_or_false)
+            if question_type != "Multi":
+                printSelectedAnswer(selected_ans, question_type)
+            else:
+                printSelectedAnswer(selected_ans, question_type, picked_ans)
         if keypress == key.DOWN:
             selected_ans += 1
             if selected_ans > amountOptions:
                 selected_ans = 0
-            printSelectedAnswer(selected_ans, true_or_false)
+            if question_type != "Multi":
+                printSelectedAnswer(selected_ans, question_type)
+            else:
+                printSelectedAnswer(selected_ans, question_type, picked_ans)
         if keypress == key.ENTER:
-            printSelectedAnswer(selected_ans, true_or_false)
-            if selected_ans == 0:
-                ans_red.click()
-            elif selected_ans == 1:
-                ans_blue.click()
-            elif selected_ans == 2:
-                ans_yellow.click() # type: ignore
-            elif selected_ans == 3:
-                ans_green.click() # type: ignore
-            break
+            printSelectedAnswer(selected_ans, question_type)
+            if question_type == "Quiz" or question_type == "TorF":
+                if selected_ans == 0:
+                    ans_red.click()
+                elif selected_ans == 1:
+                    ans_blue.click()
+                elif selected_ans == 2 and ans_yellow != "":
+                    ans_yellow.click()
+                elif selected_ans == 3 and ans_green != "":
+                    ans_green.click()
+                break
+            elif question_type == "Multi":
+                if selected_ans == 0:
+                    ans_red.click()
+                    picked_ans.append(0)
+                elif selected_ans == 1:
+                    ans_blue.click()
+                    picked_ans.append(1)
+                elif selected_ans == 2 and ans_yellow != "":
+                    ans_yellow.click()
+                    picked_ans.append(2)
+                elif selected_ans == 3 and ans_green != "":
+                    ans_green.click()
+                    picked_ans.append(3)
+                elif selected_ans == amountOptions:
+                    submit_multi.click()
+
 
     while driver.current_url != "https://kahoot.it/answer/result":
         pass
 
-    result_logo = driver.find_element(By.CSS_SELECTOR, "circle[cx='40']")
+    result = getWinState()
 
-    if result_logo.get_attribute("fill") == "#66BF39":
-        result = "Correct!"
-    elif result_logo.get_attribute("fill") == "#F35":
-        result = "Wrong..."
-
-    if "Correct" in result:
-        print(colored(result, "green", None, ["bold"]))
+    if result == True:
+        print(colored("Correct!", "green", None, ["bold"]))
         print(correctMessages[random.randrange(len(correctMessages))])
-    elif "Wrong" in result:
-        print(colored(result, "red", None, ["bold"]))
+    elif result == False:
+        print(colored("Wrong...", "red", None, ["bold"]))
         print(wrongMessages[random.randrange(len(wrongMessages))])
 
     question_no += 1
