@@ -115,7 +115,12 @@ while True:
                 pin = int(pin)
                 website = "https://kahoot.it"
     except ValueError:
-        pin = int(input("That doesn't look like a number... Please input the game pin (no spaces): "))
+            pin = input("That doesn't look like a number... Please input the game pin (no spaces): ")
+            if "https://kahoot.it" in pin: # For development purposes, this also takes copied links (I do not want to copy the pin manually)
+                website = pin
+            else:
+                pin = int(pin)
+                website = "https://kahoot.it"
     else:
         break
 
@@ -193,6 +198,7 @@ while True: # This encapsulates the whole game logic.
     cls() # Source - https://stackoverflow.com/a/684344, Clears entire CLI
 
     question_title = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='block-title']")
+    total_points = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='bottom-bar-score']")
 
     try:
         question_type = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='question-type-heading-trueOrFalseTitle']")
@@ -208,6 +214,7 @@ while True: # This encapsulates the whole game logic.
     else:
         question_type = "Multi"
 
+    print(colored(f"{nickname} - {total_points.text} points", "dark_grey"))
     if question_type == "Quiz" or question_type == "TorF":
         print(f"Question {question_no} - {question_title.text}")
     elif question_type == "Multi":
@@ -291,11 +298,13 @@ while True: # This encapsulates the whole game logic.
 
     while driver.current_url != "https://kahoot.it/answer/result":
         pass
-
+    
     result = getWinState()
 
+    points_increment = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='score-increment']")
+
     if result == True:
-        print(colored("Correct!", "green", None, ["bold"]))
+        print(colored(f"Correct! {points_increment.text} points", "green", None, ["bold"]))
         print(correctMessages[random.randrange(len(correctMessages))])
     elif result == False:
         print(colored("Wrong...", "red", None, ["bold"]))

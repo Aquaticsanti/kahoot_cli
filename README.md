@@ -9,7 +9,7 @@ Features:
 - [X] Answering single choice questions
 - [X] Answering multiple choice questions
 - [X] Answering True or False questions
-- [ ] Displaying points
+- [X] Displaying points
 - [ ] Finishing a game
 - [ ] Leaving a game
 - [ ] Error handling (this name is taken, pin is invalid, kicked out, etc.)
