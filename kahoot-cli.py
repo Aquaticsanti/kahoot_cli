@@ -252,8 +252,10 @@ while True: # This encapsulates the whole game logic.
     printSelectedAnswer(selected_ans, question_type)
 
     while True:
-        print(f"\033[{amountOptions+2}A") # Moves cursor up x lines, Source - https://stackoverflow.com/a/72667369
         keypress = readkey()
+        if keypress == key.RIGHT or keypress == key.LEFT:
+            continue
+        print(f"\033[{amountOptions+2}A") # Moves cursor up x lines, Source - https://stackoverflow.com/a/72667369
         if keypress == key.UP:
             selected_ans -= 1
             if selected_ans < 0:
