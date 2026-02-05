@@ -2,9 +2,8 @@
 
 Interact with any Kahoot quiz right from your terminal! Or import it and use it on your own scripts! The possibilities are endless! (I hope)
 
-Features:
+# Features:
 - [X] Joining a game
-- [ ] Joining a currently in progress game
 - [ ] Reactions
 - [ ] Avatars
 - [X] Answering single choice questions
@@ -15,6 +14,19 @@ Features:
 - [ ] Finishing a game
 - [ ] Leaving a game
 - [ ] Error handling (this name is taken, pin is invalid, kicked out, etc.)
+
+# Current Bugs:
+- [ ] Crash if name is taken
+- [ ] Can't handle being kicked out
+- [ ] Can't handle joining in progress game
+- [ ] Crash if ran out of time
+- [ ] Won't detect if name was changed
+- [ ] Can't handle random name generator
+- [ ] Can't hande 2FA (yes that is a thing in kahoot)
+- [ ] Won't realize if name is too long (and gets truncated)
+- [ ] Can't deselect options in Multiple Choice
+- [ ] Can submit blank in multiple choice
+- [ ] Can submit a blank nickname
     
 # Why would anyone need this, since this just uses Selenium?
 
