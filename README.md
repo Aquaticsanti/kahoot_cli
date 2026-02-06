@@ -18,11 +18,9 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 # Current Bugs:
 - [ ] Can't handle being kicked out
 - [ ] Crash if ran out of time
-- [ ] Won't detect if name was changed
 - [ ] Can't handle random name generator
 - [ ] Can't hande 2FA (yes that is a thing in kahoot)
 - [ ] Won't realize if name is too long (and gets truncated)
-- [ ] Can't deselect options in Multiple Choice
 - [ ] Can submit blank in multiple choice
 - [ ] Can submit a blank nickname
 - [ ] If a multiple choice answer is partially correct, it gets confused and just doesn't display anything

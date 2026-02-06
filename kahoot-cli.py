@@ -300,16 +300,28 @@ while True: # This encapsulates the whole game logic.
                 printSelectedAnswer(selected_ans, question_type, picked_ans)
                 if selected_ans == 0:
                     ans_red.click()
-                    picked_ans.append(0)
+                    if 0 not in picked_ans:
+                        picked_ans.append(0)
+                    elif 0 in picked_ans:
+                        picked_ans.remove(0)
                 elif selected_ans == 1:
                     ans_blue.click()
-                    picked_ans.append(1)
+                    if 1 not in picked_ans:
+                        picked_ans.append(1)
+                    elif 1 in picked_ans:
+                        picked_ans.remove(1)
                 elif selected_ans == 2 and ans_yellow != "":
                     ans_yellow.click()
-                    picked_ans.append(2)
+                    if 2 not in picked_ans:
+                        picked_ans.append(2)
+                    elif 2 in picked_ans:
+                        picked_ans.remove(2)
                 elif selected_ans == 3 and ans_green != "":
                     ans_green.click()
-                    picked_ans.append(3)
+                    if 3 not in picked_ans:
+                        picked_ans.append(3)
+                    elif 3 in picked_ans:
+                        picked_ans.remove(3)
                 elif selected_ans == amountOptions:
                     submit_multi.click()
                     break
