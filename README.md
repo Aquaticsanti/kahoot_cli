@@ -20,8 +20,6 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 - [ ] Crash if ran out of time
 - [ ] Can't handle random name generator
 - [ ] Can't hande 2FA (yes that is a thing in kahoot)
-- [ ] Won't realize if name is too long (and gets truncated)
-- [ ] Can submit a blank nickname
 - [ ] If a multiple choice answer is partially correct, it gets confused and just doesn't display anything
 - [ ] Won't detect irregular gamemodes (that it can't play)
     

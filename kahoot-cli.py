@@ -167,7 +167,16 @@ while True:
 name_box = driver.find_element(by=By.NAME, value="nickname")
 name_submit = driver.find_element(By.CSS_SELECTOR, ("button[type='submit']"))
 
+validNickname = False
 nickname = input("What's your name? (Don't use your real name): ")
+while validNickname != True:
+    if nickname == "":
+        nickname = input("Uh oh, looks like your nickname is blank. Please choose a valid nickname (Don't use your real name): ")
+    elif len(nickname) > 15:
+        nickname = input("Uh oh, looks like your nickname is too long. Please choose a nickname with less than 15 characters (Don't use your real name): ")
+    else:
+        break
+
 
 name_box.send_keys(nickname)
 name_submit.click()
