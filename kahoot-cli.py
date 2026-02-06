@@ -89,11 +89,14 @@ def printSelectedAnswer(option_no: int = 0, question_type: str = "Quiz", picked_
 
 def getWinState():
     result_logo = driver.find_element(By.CSS_SELECTOR, "circle[cx='40']")
-
     if result_logo.get_attribute("fill") == "#66BF39":
         return True
     elif result_logo.get_attribute("fill") == "#F35":
         return False
+    else:
+        result_logo = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='partial-correct-answer']")
+        return result_logo.text
+
 
 correctMessages = ["Way to go, superstar!", "Amazing!", "Trust me, your oponents are jealous.", "One step closer to victory!", "Keep the flame lit!"]
 wrongMessages = ["Don't worry, you'll get them next time!", "Never back down never what?", "Nice try!"]
@@ -349,14 +352,33 @@ while True: # This encapsulates the whole game logic.
         pass
     
     result = getWinState()
-
-    if result == True:
+    if type(result) == bool:
+        if result == True:
+            points_increment = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='score-increment']")
+            print(colored(f"Correct! {points_increment.text} points", "green", None, ["bold"]))
+            print(correctMessages[random.randrange(len(correctMessages))])
+        elif result == False:
+            print(colored("Wrong...", "red", None, ["bold"]))
+            print(wrongMessages[random.randrange(len(wrongMessages))])
+    else:
         points_increment = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='score-increment']")
-        print(colored(f"Correct! {points_increment.text} points", "green", None, ["bold"]))
-        print(correctMessages[random.randrange(len(correctMessages))])
-    elif result == False:
-        print(colored("Wrong...", "red", None, ["bold"]))
-        print(wrongMessages[random.randrange(len(wrongMessages))])
+        points_increment = points_increment.text
+        final_res = ""
+        temp_res = ""
+        save_line = False
+        for char in result:
+            temp_res += char
+            if char == "/" and final_res == "":
+                save_line = True
+            if char == "\n" and save_line == True:
+                final_res = temp_res
+                break
+            elif char == "\n" and save_line == False:
+                temp_res = ""
+        
+        final_res = final_res.replace("\n", "")
+        print(colored("Partially Correct", "light_blue", None, ["bold"]), f"- {final_res} right answers, for {points_increment} points")
+        
 
     leaderboard_pos = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='player-rank']")
     try:
