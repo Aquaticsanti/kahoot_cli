@@ -210,6 +210,54 @@ while True:
             time.sleep(3)
     elif driver.current_url == "https://kahoot.it/gameblock":
         break
+    elif driver.current_url == "https://kahoot.it/twoauth":
+        try:
+            if red_auth == "":
+                print("", end="\r") # This is supposed to check if red_auth exists, AKA if it's the first time inputting the code
+        except NameError:
+            print("Looks like this game uses 2FA! Please input the combination shown on screen.")
+            print(colored("r", "red"), "for", colored("red", "red"), end=", ")
+            print(colored("b", "blue"), "for", colored("blue", "blue"), end=", ")
+            print(colored("y", "yellow"), "for", colored("yellow", "yellow"), end=", ")
+            print("and", colored("g", "green"), "for", colored("green", "green"))
+
+            red_auth = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='two-factor-cards__triangle-button']")
+            blue_auth = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='two-factor-cards__diamond-button']")
+            yellow_auth = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='two-factor-cards__circle-button']")
+            green_auth = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='two-factor-cards__square-button']")
+        else:
+            print("Please input the combination shown on screen.")
+        combo = input()
+        while True:
+            if len(combo) > 4:
+                combo = input("That combo is invalid, please try again: ")
+            else:
+                for char in combo:
+                    if char not in ["r", "b", "y", "g", "R", "B", "Y", "G"]:
+                        combo = input("That combo is invalid, please try again: ")
+                        break
+                if len(combo) == 4: # Not the best solution, but I guess it works?
+                    break
+        for char in combo:
+            if char == "r" or char == "R":
+                red_auth.click()
+                time.sleep(0.25)
+            elif char == "b" or char == "B":
+                blue_auth.click()
+                time.sleep(0.25)
+            elif char == "y" or char == "Y":
+                yellow_auth.click()
+                time.sleep(0.25)
+            elif char == "g" or char == "G":
+                green_auth.click()
+                time.sleep(0.25)
+        time.sleep(0.5)
+        if driver.current_url == "https://kahoot.it/twoauth":
+            print("Uh oh, that combo was invalid.")
+            
+
+
+
 
 
 while driver.current_url != "https://kahoot.it/start":
