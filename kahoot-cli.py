@@ -153,7 +153,7 @@ langEN = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='option
 langEN.click()
 
 while True:
-    if driver.current_url == "https://kahoot.it/join":
+    if driver.current_url == "https://kahoot.it/join" or driver.current_url == "https://kahoot.it/namerator":
         break
     else:
         while True:
@@ -167,22 +167,66 @@ while True:
         pin_box.send_keys(pin)
         pin_submit.click()
 
-name_box = driver.find_element(by=By.NAME, value="nickname")
-name_submit = driver.find_element(By.CSS_SELECTOR, ("button[type='submit']"))
+nickname = ""
+if driver.current_url == "https://kahoot.it/join":
+    name_box = driver.find_element(by=By.NAME, value="nickname")
+    name_submit = driver.find_element(By.CSS_SELECTOR, ("button[type='submit']"))
 
-validNickname = False
-nickname = input("What's your name? (Don't use your real name): ")
-while validNickname != True:
-    if nickname == "":
-        nickname = input("Uh oh, looks like your nickname is blank. Please choose a valid nickname (Don't use your real name): ")
-    elif len(nickname) > 15:
-        nickname = input("Uh oh, looks like your nickname is too long. Please choose a nickname with less than 15 characters (Don't use your real name): ")
-    else:
-        break
+    validNickname = False
+    nickname = input("What's your name? (Don't use your real name): ")
+    while validNickname != True:
+        if nickname == "":
+            nickname = input("Uh oh, looks like your nickname is blank. Please choose a valid nickname (Don't use your real name): ")
+        elif len(nickname) > 15:
+            nickname = input("Uh oh, looks like your nickname is too long. Please choose a nickname with less than 15 characters (Don't use your real name): ")
+        else:
+            break
+
+    name_box.send_keys(nickname)
+    name_submit.click()
+elif driver.current_url == "https://kahoot.it/namerator":
+    nickname_old = ""
+    print("This game uses a random name generator!")
+    print("Press", colored("enter", None, None, ["italic"]), "to re-roll, and", colored("space", None, None, ["italic"]), "to select!")
+    spins = 3
+    while True:
+        keypress = readkey()
+        if keypress == key.ENTER:
+            if spins > 0:
+                spin_button = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='namerator-spin-button']")
+                spins -= 1
+                spin_button.click()
+                while True:
+                    print("Rolling...", end="\r")
+                    try:
+                        if spins > 0:
+                            spin_button = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='namerator-spin-button']")
+                            nickname = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='name-spinner-selected-name']")
+                        else:
+                            name_submit = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='namerator-continue-button']")
+                            nickname = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='name-spinner-selected-name']")
+                    except:
+                        pass
+                    else:
+                        print("Your nickname is...", colored(nickname.text, None, None, ["bold"]))
+                        print(colored(f"{spins} spins left", "dark_grey"))
+                        break
+            else:
+                print("Uh oh, looks like there's no spins left! Please press", colored("space", None, None, ["italic"]), "to select.")
+        elif keypress == key.SPACE:
+            try:
+                if nickname == "": # Basically check if nickname exists, without the user knowing
+                    print("", end="\r")
+            except NameError:
+                print("Please roll once!")
+            else:
+                name_submit = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='namerator-continue-button']")
+                nickname = nickname.text
+                name_submit.click()
+                break
+        
 
 
-name_box.send_keys(nickname)
-name_submit.click()
 
 
 while True:

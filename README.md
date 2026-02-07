@@ -18,7 +18,6 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 # Current Bugs:
 - [ ] Can't handle being kicked out
 - [ ] Crash if ran out of time
-- [ ] Can't handle random name generator
 - [ ] Won't detect irregular gamemodes (that it can't play)
     
 # Why would anyone need this, since this just uses Selenium?
