@@ -167,7 +167,6 @@ while True:
         pin_box.send_keys(pin)
         pin_submit.click()
 
-nickname = ""
 if driver.current_url == "https://kahoot.it/join":
     name_box = driver.find_element(by=By.NAME, value="nickname")
     name_submit = driver.find_element(By.CSS_SELECTOR, ("button[type='submit']"))
@@ -225,9 +224,6 @@ elif driver.current_url == "https://kahoot.it/namerator":
                 name_submit.click()
                 break
         
-
-
-
 
 while True:
     if driver.current_url == "https://kahoot.it/instructions":
@@ -300,10 +296,6 @@ while True:
             print("Uh oh, that combo was invalid.")
             
 
-
-
-
-
 while driver.current_url != "https://kahoot.it/start":
     if driver.current_url == "https://kahoot.it/gameblock":
         break
@@ -372,13 +364,19 @@ while True: # This encapsulates the whole game logic.
     selected_ans = 0
 
     printSelectedAnswer(selected_ans, question_type)
-
+    ranOutOfTime = False
     while True:
+        if driver.current_url == "https://kahoot.it/answer/result":
+            ranOutOfTime = True
+            break
         keypress = readkey()
         if keypress == key.RIGHT or keypress == key.LEFT:
             continue
         print(f"\033[{amountOptions+2}A") # Moves cursor up x lines, Source - https://stackoverflow.com/a/72667369
         if keypress == key.UP:
+            if driver.current_url == "https://kahoot.it/answer/result":
+                ranOutOfTime = True
+                break
             selected_ans -= 1
             if selected_ans < 0:
                 selected_ans = amountOptions
@@ -387,6 +385,9 @@ while True: # This encapsulates the whole game logic.
             else:
                 printSelectedAnswer(selected_ans, question_type, picked_ans)
         if keypress == key.DOWN:
+            if driver.current_url == "https://kahoot.it/answer/result":
+                ranOutOfTime = True
+                break
             selected_ans += 1
             if selected_ans > amountOptions:
                 selected_ans = 0
@@ -395,6 +396,9 @@ while True: # This encapsulates the whole game logic.
             else:
                 printSelectedAnswer(selected_ans, question_type, picked_ans)
         if keypress == key.ENTER:
+            if driver.current_url == "https://kahoot.it/answer/result":
+                ranOutOfTime = True
+                break
             if question_type == "Quiz" or question_type == "TorF":
                 printSelectedAnswer(selected_ans, question_type)
                 if selected_ans == 0:
@@ -442,35 +446,36 @@ while True: # This encapsulates the whole game logic.
 
     while driver.current_url != "https://kahoot.it/answer/result":
         pass
-    
-    result = getWinState()
-    if type(result) == bool:
-        if result == True:
+    if ranOutOfTime == False:
+        result = getWinState()
+        if type(result) == bool:
+            if result == True:
+                points_increment = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='score-increment']")
+                print(colored(f"Correct! {points_increment.text} points", "green", None, ["bold"]))
+                print(correctMessages[random.randrange(len(correctMessages))])
+            elif result == False:
+                print(colored("Wrong...", "red", None, ["bold"]))
+                print(wrongMessages[random.randrange(len(wrongMessages))])
+        else:
             points_increment = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='score-increment']")
-            print(colored(f"Correct! {points_increment.text} points", "green", None, ["bold"]))
-            print(correctMessages[random.randrange(len(correctMessages))])
-        elif result == False:
-            print(colored("Wrong...", "red", None, ["bold"]))
-            print(wrongMessages[random.randrange(len(wrongMessages))])
+            points_increment = points_increment.text
+            final_res = ""
+            temp_res = ""
+            save_line = False
+            for char in result:
+                temp_res += char
+                if char == "/" and final_res == "":
+                    save_line = True
+                if char == "\n" and save_line == True:
+                    final_res = temp_res
+                    break
+                elif char == "\n" and save_line == False:
+                    temp_res = ""
+            final_res = final_res.replace("\n", "")
+            print(colored("Partially Correct", "light_blue", None, ["bold"]), f"- {final_res} right answers, for {points_increment} points")
     else:
-        points_increment = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='score-increment']")
-        points_increment = points_increment.text
-        final_res = ""
-        temp_res = ""
-        save_line = False
-        for char in result:
-            temp_res += char
-            if char == "/" and final_res == "":
-                save_line = True
-            if char == "\n" and save_line == True:
-                final_res = temp_res
-                break
-            elif char == "\n" and save_line == False:
-                temp_res = ""
-        
-        final_res = final_res.replace("\n", "")
-        print(colored("Partially Correct", "light_blue", None, ["bold"]), f"- {final_res} right answers, for {points_increment} points")
-        
+        print(colored("You ran out of time...", "red", None, ["bold"]))
+        print(wrongMessages[random.randrange(len(wrongMessages))])
 
     leaderboard_pos = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='player-rank']")
     try:
@@ -547,6 +552,3 @@ else:
 
 input()
 
-
-
-    
