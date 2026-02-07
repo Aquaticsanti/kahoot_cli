@@ -12,7 +12,7 @@ Interact with any Kahoot quiz right from your terminal! Or import it and use it 
 - [X] Displaying points
 - [X] Displaying ranking
 - [X] Finishing a game
-- [ ] Error handling (this name is taken, pin is invalid, kicked out, etc.)
+- [X] Error handling (this name is taken, pin is invalid, kicked out, etc.)
 
 # Current Bugs:
 - [ ] Won't detect irregular gamemodes (that it can't play)
