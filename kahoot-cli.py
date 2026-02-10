@@ -331,7 +331,10 @@ while True: # This encapsulates the whole game logic.
 
     cls() # Source - https://stackoverflow.com/a/684344, Clears entire CLI
 
-    question_title = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='block-title']")
+    try:
+        question_title = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='block-title']")
+    except:
+        question_title = None
     total_points_element = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='bottom-bar-score']")
     total_points = total_points_element.text
 
@@ -351,9 +354,15 @@ while True: # This encapsulates the whole game logic.
 
     print(colored(f"{nickname} - {total_points} points", "dark_grey"))
     if question_type == "Quiz" or question_type == "TorF":
-        print(f"Question {question_no} - {question_title.text}")
+        if question_title != None:
+            print(f"Question {question_no} - {question_title.text}")
+        else:
+            print(f"Question {question_no}")
     elif question_type == "Multi":
-        print(f"Question {question_no} - {question_title.text}", colored(" (MULTIPLE CHOICE!)", None, None, ["bold"]))
+        if question_title == None:
+            print(f"Question {question_no}", colored(" (MULTIPLE CHOICE!)", None, None, ["bold"]))
+        else:
+            print(f"Question {question_no} - {question_title.text}", colored(" (MULTIPLE CHOICE!)", None, None, ["bold"]))
 
     ans_red = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-0']")
     ans_blue = driver.find_element(By.CSS_SELECTOR, "[data-functional-selector='answer-1']")
