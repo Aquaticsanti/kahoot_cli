@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+kahoot_cli/__init__.py
+kahoot_cli/__main__.py
+kahoot_cli/kahoot_cli.py
+kahoot_cli.egg-info/PKG-INFO
+kahoot_cli.egg-info/SOURCES.txt
+kahoot_cli.egg-info/dependency_links.txt
+kahoot_cli.egg-info/top_level.txt
