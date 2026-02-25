@@ -54,16 +54,16 @@ class KahootClient():
 
         # Set up and launch selenium driver
         options = Options()
-#        optionsToAdd = ["--disable-component-extensions-with-background-pages", "--disable-default-apps", "--disable-extensions", 
-#                        "--disable-features=InterestFeedContentSuggestions", "--disable-features=Translate", "--mute-audio",
-#                        "--no-default-browser-check", "--no-first-run", "--ash-no-nudges", "--disable-search-engine-choice-screen",
-#                        "--propagate-iph-for-testing", "--disable-back-forward-cache", "--disable-features=BackForwardCache",
-#                        "--disable-features=HeavyAdPrivacyMitigations", "--no-process-per-site", "--disable-background-networking",
-#                        "--disable-component-update", "--disable-domain-reliability", "--disable-features=AutofillServerCommunication",
-#                        "--disable-features=CertificateTransparencyComponentUpdater", "--disable-sync", "--metrics-recording-only",
-#                        "--disable-features=OptimizationHints", "--single-process", "--headless=new"]
-#        for arg in optionsToAdd:
-#            options.add_argument(arg)
+        optionsToAdd = ["--disable-component-extensions-with-background-pages", "--disable-default-apps", "--disable-extensions", 
+                        "--disable-features=InterestFeedContentSuggestions", "--disable-features=Translate", "--mute-audio",
+                        "--no-default-browser-check", "--no-first-run", "--ash-no-nudges", "--disable-search-engine-choice-screen",
+                        "--propagate-iph-for-testing", "--disable-back-forward-cache", "--disable-features=BackForwardCache",
+                        "--disable-features=HeavyAdPrivacyMitigations", "--no-process-per-site", "--disable-background-networking",
+                        "--disable-component-update", "--disable-domain-reliability", "--disable-features=AutofillServerCommunication",
+                        "--disable-features=CertificateTransparencyComponentUpdater", "--disable-sync", "--metrics-recording-only",
+                        "--disable-features=OptimizationHints", "--single-process", "--headless=new"]
+        for arg in optionsToAdd:
+            options.add_argument(arg)
         global _driver
         _driver = webdriver.Chrome(options=options)
         _driver.implicitly_wait(0.5)
