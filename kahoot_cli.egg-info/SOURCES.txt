@@ -7,4 +7,5 @@ kahoot_cli/kahoot_cli.py
 kahoot_cli.egg-info/PKG-INFO
 kahoot_cli.egg-info/SOURCES.txt
 kahoot_cli.egg-info/dependency_links.txt
+kahoot_cli.egg-info/requires.txt
 kahoot_cli.egg-info/top_level.txt

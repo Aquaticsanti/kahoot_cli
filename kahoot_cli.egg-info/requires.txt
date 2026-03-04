@@ -1,0 +1,3 @@
+selenium>=4.41.0
+termcolor>=3.3.0
+readchar>=4.2.1
