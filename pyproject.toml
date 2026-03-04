@@ -3,8 +3,13 @@ requires = ["setuptools >= 77.0.3", "selenium >= 4.41.0", "termcolor >= 3.3.0", 
 build-backend = "setuptools.build_meta"
 
 [project]
+dependencies = [
+  "selenium >= 4.41.0", 
+  "termcolor >= 3.3.0", 
+  "readchar >= 4.2.1",
+]
 name = "kahoot_cli"
-version = "1.0.1"
+version = "1.0.2"
 readme = "README.md"
 authors = [
   { name="Aquaticsanti", email="aquaticsanti@gmail.com" },
